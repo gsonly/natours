@@ -5,6 +5,27 @@ const filepath = path.join(__dirname, '../dev-data/data/tours-simple.json')
 
 const tours = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
 
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Bad request: missing name or price'
+    })
+  }
+  next()
+}
+
+exports.checkID = (req, res, next, val) => {
+  console.log(val)
+  if (val >= tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID'
+    })
+  }
+  next()
+}
+
 exports.getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -17,12 +38,7 @@ exports.getTours = (req, res) => {
 
 exports.getTour = (req, res) => {
   const tour = tours.find(tour => tour.id === +req.params.id)
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    })
-  }
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -33,12 +49,7 @@ exports.getTour = (req, res) => {
 
 exports.updateTour = (req, res) => {
   const tour = tours.find(tour => tour.id === +req.params.id)
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID'
-    })
-  }
+
   const newTour = Object.assign(tour, req.body)
   console.log(newTour)
   res.status(200).json({
