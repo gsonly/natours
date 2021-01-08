@@ -1,10 +1,23 @@
 const express = require('express')
 const fs = require('fs')
 const path = require('path')
+const morgan = require('morgan')
 
 const app = express()
 
+app.use(morgan('dev'))
+
 app.use(express.json())
+
+app.use((req, res, next) => {
+  console.log('hello from middleware 💩')
+  next()
+})
+
+app.use((req, res, next) => {
+  req.requestedAt = new Date().toISOString()
+  next()
+})
 
 const filepath = path.join(__dirname, '/dev-data/data/tours-simple.json')
 
@@ -13,6 +26,7 @@ const tours = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
 const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestedAt,
     results: tours.length,
     data: {
       tours
