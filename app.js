@@ -9,16 +9,6 @@ app.use(morgan('dev'))
 
 app.use(express.json())
 
-app.use((req, res, next) => {
-  console.log('hello from middleware 💩')
-  next()
-})
-
-app.use((req, res, next) => {
-  req.requestedAt = new Date().toISOString()
-  next()
-})
-
 const filepath = path.join(__dirname, '/dev-data/data/tours-simple.json')
 
 const tours = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
@@ -26,7 +16,6 @@ const tours = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
 const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
-    requestedAt: req.requestedAt,
     results: tours.length,
     data: {
       tours
@@ -90,7 +79,43 @@ const createTour = (req, res) => {
   })
 }
 
+const getUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'not implemented'
+  })
+}
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'not implemented'
+  })
+}
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'not implemented'
+  })
+}
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'not implemented'
+  })
+}
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'not implemented'
+  })
+}
+
 app.route('/api/v1/tours').get(getTours).post(createTour)
+
 app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
+
+app.route('/api/v1/users').get(getUsers).post(createUser)
+
+app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
 app.listen(3000, console.log(`http://localhost:${3000}`))
