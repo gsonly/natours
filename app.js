@@ -10,7 +10,7 @@ const filepath = path.join(__dirname, '/dev-data/data/tours-simple.json')
 
 const tours = JSON.parse(fs.readFileSync(filepath, 'utf-8'))
 
-app.get('/api/v1/tours', (req, res) => {
+const getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -18,9 +18,9 @@ app.get('/api/v1/tours', (req, res) => {
       tours
     }
   })
-})
+}
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   const tour = tours.find(tour => tour.id === +req.params.id)
   if (!tour) {
     return res.status(404).json({
@@ -34,9 +34,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour
     }
   })
-})
+}
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   const tour = tours.find(tour => tour.id === +req.params.id)
   if (!tour) {
     return res.status(404).json({
@@ -52,16 +52,16 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour: newTour
     }
   })
-})
+}
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   res.status(204).json({
     status: 'success',
     data: null
   })
-})
+}
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
   const id = tours[tours.length - 1].id + 1
   const tour = Object.assign({ id }, req.body)
   tours.push(tour)
@@ -74,6 +74,9 @@ app.post('/api/v1/tours', (req, res) => {
       }
     })
   })
-})
+}
+
+app.route('/api/v1/tours').get(getTours).post(createTour)
+app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour)
 
 app.listen(3000, console.log(`http://localhost:${3000}`))
