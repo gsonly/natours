@@ -2,12 +2,13 @@ const express = require('express')
 const morgan = require('morgan')
 const path = require('path')
 const { tourRoutes, userRoutes } = require('./routes')
+const { IN_PROD } = require('./config')
 
 const assetspath = path.join(__dirname, '/public')
 
 const app = express()
 
-app.use(morgan('dev'))
+!IN_PROD && app.use(morgan('dev'))
 
 app.use(express.json())
 

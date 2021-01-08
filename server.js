@@ -1,3 +1,4 @@
 const app = require('./app')
+const { APP_PORT } = require('./config')
 
-app.listen(3000, console.log(`http://localhost:${3000}`))
+app.listen(APP_PORT, console.log(`http://localhost:${APP_PORT}`))
