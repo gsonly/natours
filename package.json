@@ -4,6 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "up": "docker-compose up -d",
+    "postup": "npm run dev",
+    "stop": "docker-compose stop",
+    "down": "docker-compose down",
     "start": "NODE_ENV=production node server.js",
     "dev": "eval $(cat .env) nodemon server.js"
   },

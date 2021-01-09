@@ -1,0 +1,19 @@
+version: '3'
+
+services: 
+  db:
+    image: mongo:latest
+    ports: 
+      - 27017:27017
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      MONGO_INITDB_DATABASE: natours
+      MONGO_USERNAME: admin
+      MONGO_PASSWORD: secret
+    volumes: 
+      - data:/data/db
+      - ./mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
+
+volumes: 
+  data:
