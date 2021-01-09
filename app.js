@@ -8,7 +8,7 @@ const assetspath = path.join(__dirname, '/public')
 
 const app = express()
 
-!IN_PROD && app.use(morgan('dev'))
+if (!IN_PROD) app.use(morgan('dev'))
 
 app.use(express.json())
 
