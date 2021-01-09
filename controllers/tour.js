@@ -9,7 +9,7 @@ exports.checkBody = (req, res, next) => {
   if (!req.body.name || !req.body.price) {
     return res.status(400).json({
       status: 'fail',
-      message: 'Bad request: missing name or price'
+      message: 'Bad request: missing name or price',
     })
   }
   next()
@@ -20,7 +20,7 @@ exports.checkID = (req, res, next, val) => {
   if (val >= tours.length) {
     return res.status(404).json({
       status: 'fail',
-      message: 'Invalid ID'
+      message: 'Invalid ID',
     })
   }
   next()
@@ -31,8 +31,8 @@ exports.getTours = (req, res) => {
     status: 'success',
     results: tours.length,
     data: {
-      tours
-    }
+      tours,
+    },
   })
 }
 
@@ -42,8 +42,8 @@ exports.getTour = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      tour
-    }
+      tour,
+    },
   })
 }
 
@@ -55,29 +55,29 @@ exports.updateTour = (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      tour: newTour
-    }
+      tour: newTour,
+    },
   })
 }
 
 exports.deleteTour = (req, res) => {
   res.status(204).json({
     status: 'success',
-    data: null
+    data: null,
   })
 }
 
 exports.createTour = (req, res) => {
   const id = tours[tours.length - 1].id + 1
-  const tour = Object.assign({ id }, req.body)
+  const tour = { id, ...req.body }
   tours.push(tour)
   fs.writeFile(filepath, JSON.stringify(tours), e => {
     if (e) throw new Error(e)
     res.status(200).json({
       status: 'success',
       data: {
-        tour
-      }
+        tour,
+      },
     })
   })
 }
