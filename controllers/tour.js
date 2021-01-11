@@ -21,6 +21,7 @@ exports.getTours = async (req, res) => {
 exports.getTour = async (req, res) => {
   try {
     const tour = await Tour.findById(req.params.id)
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -38,6 +39,7 @@ exports.getTour = async (req, res) => {
 exports.createTour = async (req, res) => {
   try {
     const tour = await Tour.create(req.body)
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -58,6 +60,7 @@ exports.updateTour = async (req, res) => {
       new: true,
       runValidators: true,
     })
+
     res.status(200).json({
       status: 'success',
       data: {

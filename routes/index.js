@@ -3,5 +3,5 @@ const userRoutes = require('./user')
 
 module.exports = {
   tourRoutes,
-  userRoutes
+  userRoutes,
 }
