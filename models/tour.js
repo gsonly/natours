@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const slugify = require('slugify') //TODO: slugify
+const slugify = require('slugify')
 
 const tourSchema = new mongoose.Schema(
   {
@@ -83,7 +83,7 @@ tourSchema.virtual('durationWeeks').get(function () {
 })
 
 tourSchema.pre('save', function (next) {
-  // this.slug = slugify(this.name, { lower: true }) //TODO: slugify
+  this.slug = slugify(this.name, { lower: true })
   next()
 })
 
