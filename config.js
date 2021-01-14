@@ -6,6 +6,8 @@ const {
   MONGO_HOST = 'localhost',
   MONGO_PORT = 27017,
   MONGO_DATABASE = 'natours',
+  JWT_SECRET = 'secret',
+  JWT_TIMEOUT = '90d',
 } = process.env
 
 const IN_PROD = NODE_ENV === 'production'
@@ -25,4 +27,6 @@ module.exports = {
   IN_PROD,
   MONGO_URI,
   MONGO_OPTIONS,
+  JWT_SECRET,
+  JWT_TIMEOUT,
 }
