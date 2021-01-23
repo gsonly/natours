@@ -8,6 +8,10 @@ const {
   MONGO_DATABASE = 'natours',
   JWT_SECRET = 'secret',
   JWT_TIMEOUT = '90d',
+  EMAIL_HOST = 'localhost',
+  EMAIL_PORT = 2525,
+  EMAIL_USER = 'user',
+  EMAIL_PASS = 'secret',
 } = process.env
 
 const IN_PROD = NODE_ENV === 'production'
@@ -29,4 +33,8 @@ module.exports = {
   MONGO_OPTIONS,
   JWT_SECRET,
   JWT_TIMEOUT,
+  EMAIL_HOST,
+  EMAIL_PORT,
+  EMAIL_USER,
+  EMAIL_PASS,
 }

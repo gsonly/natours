@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 const mongoose = require('mongoose')
 const isEmail = require('validator/lib/isEmail')
 const { hash, compare } = require('bcryptjs')
@@ -34,7 +35,14 @@ const userSchema = new mongoose.Schema(
         message: 'passwords do not match',
       },
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin', 'guide', 'lead-guide'],
+      default: 'user',
+    },
     passwordChangedAt: Date,
+    resetToken: String,
+    resetTokenExp: Date,
   },
   {
     timestamps: true,
@@ -49,6 +57,13 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
+// userSchema.pre('save', function (next) {
+//   if (!this.isNew || this.isModified('password')) {
+//     this.passwordChangedAt = Date.now()
+//   }
+//   next()
+// })
+
 userSchema.methods.verifyPassword = async function (password) {
   return await compare(password, this.password)
 }
@@ -59,6 +74,13 @@ userSchema.methods.passwordChangedAfter = function (jwtTimestamp) {
     return timestamp > jwtTimestamp
   }
   return false
+}
+
+userSchema.methods.createResetToken = function () {
+  const token = crypto.randomBytes(32).toString('hex')
+  this.resetToken = crypto.createHash('sha256').update(token).digest('hex')
+  this.resetTokenExp = Date.now() + 10 * 60 * 1000
+  return token
 }
 
 module.exports = mongoose.model('User', userSchema)
