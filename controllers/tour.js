@@ -14,9 +14,7 @@ exports.getTours = catchAsync(async (req, res, next) => {
     .sorting()
     .fieldsLimiting()
     .pagination()
-
   const tours = await features.query
-
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -28,9 +26,7 @@ exports.getTours = catchAsync(async (req, res, next) => {
 
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id)
-
-  if (!tour) return next(new AppError('cannot find tour with that ID', 404))
-
+  if (!tour) throw new AppError('cannot find tour with that ID', 404)
   res.status(200).json({
     status: 'success',
     data: {
@@ -41,7 +37,6 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
 exports.createTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.create(req.body)
-
   res.status(201).json({
     status: 'success',
     data: {
@@ -55,9 +50,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   })
-
-  if (!tour) return next(new AppError('cannot find tour with that ID', 404))
-
+  if (!tour) throw new AppError('cannot find tour with that ID', 404)
   res.status(200).json({
     status: 'success',
     data: {
@@ -68,9 +61,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 
 exports.deleteTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findByIdAndDelete(req.params.id)
-
-  if (!tour) return next(new AppError('cannot find tour with that ID', 404))
-
+  if (!tour) throw new AppError('cannot find tour with that ID', 404)
   res.status(204).json({
     status: 'success',
     data: null,
@@ -102,7 +93,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     //   $match: { _id: { $ne: 'EASY' } },
     // },
   ])
-
   res.status(200).json({
     status: 'success',
     data: {
@@ -113,7 +103,6 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   const year = +req.params.year
-
   const plans = await Tour.aggregate([
     {
       $unwind: '$startDates',
@@ -143,7 +132,6 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
       $sort: { numTours: -1 },
     },
   ])
-
   res.status(200).json({
     status: 'success',
     data: {

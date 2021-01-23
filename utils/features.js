@@ -6,20 +6,14 @@ module.exports = class {
 
   filtering() {
     const queryObj = { ...this.queryStr }
-
     const filteredObj = ['sort', 'page', 'limit', 'fields']
-
     filteredObj.forEach(f => delete queryObj[f])
-
     let queryString = JSON.stringify(queryObj)
-
     queryString = queryString.replace(
       /\b(gte|gt|lte|lt)\b/g,
       match => `$${match}`
     )
-
     this.query = this.query.find(JSON.parse(queryString))
-
     return this
   }
 
@@ -30,7 +24,6 @@ module.exports = class {
     } else {
       this.query = this.query.sort('-createdAt')
     }
-
     return this
   }
 
@@ -41,19 +34,14 @@ module.exports = class {
     } else {
       this.query = this.query.select('-__v')
     }
-
     return this
   }
 
   pagination() {
     const limit = +this.queryStr.limit || 10
-
     const page = +this.queryStr.page || 1
-
     const skip = (page - 1) * limit
-
     this.query = this.query.skip(skip).limit(limit)
-
     return this
   }
 }
