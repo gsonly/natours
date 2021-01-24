@@ -3,15 +3,23 @@ const { sign, verify } = require('jsonwebtoken')
 const { promisify } = require('util')
 const { User } = require('../models')
 const { catchAsync, AppError, sendEmail } = require('../utils')
-const { JWT_SECRET, JWT_TIMEOUT } = require('../config')
+const { JWT_SECRET, JWT_TTL, IN_PROD, COOKIE_TTL } = require('../config')
 
 const signJWT = id =>
   sign({ id }, JWT_SECRET, {
-    expiresIn: JWT_TIMEOUT,
+    expiresIn: JWT_TTL,
   })
 
 const sendToken = (code, user, res) => {
   const token = signJWT(user._id)
+  const cookieTTL = COOKIE_TTL * 24 * 60 * 60 * 1000
+  const cookieOpts = {
+    expires: new Date(Date.now() + cookieTTL),
+    httpOnly: true,
+  }
+  if (IN_PROD) cookieOpts.secure = true
+  res.cookie('jwt', token, cookieOpts)
+  user.password = undefined
   res.status(code).json({
     status: 'success',
     token,
