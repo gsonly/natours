@@ -3,4 +3,5 @@ module.exports = {
   ...require('./tour'),
   ...require('./error'),
   ...require('./auth'),
+  ...require('./review'),
 }

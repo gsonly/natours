@@ -1,4 +1,5 @@
 const { Router } = require('express')
+const reviewRouter = require('./review')
 const {
   getTours,
   getTour,
@@ -10,6 +11,7 @@ const {
   getMonthlyPlan,
   protect,
   restrict,
+  // createReview,
 } = require('../controllers')
 
 const router = Router()
@@ -23,5 +25,7 @@ router
   .get(getTour)
   .patch(updateTour)
   .delete(protect, restrict('admin', 'lead-guide'), deleteTour)
+router.use('/:id/reviews', reviewRouter)
+// router.route('/:id/reviews').post(protect, restrict('user'), createReview)
 
 module.exports = router
