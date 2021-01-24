@@ -11,6 +11,11 @@ const filteredBody = (obj, ...fields) => {
   return filteredObj
 }
 
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user._id
+  next()
+}
+
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm)
     throw new AppError('use /updatePassword for passwords', 400)
