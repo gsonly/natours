@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const slugify = require('slugify')
+// const User = require('./user')
 
 const tourSchema = new mongoose.Schema(
   {
@@ -121,6 +122,12 @@ tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true })
   next()
 })
+
+// tourSchema.pre('save', async function (next) {
+//   const guides = this.guides.map(async id => await User.findById(id))
+//   this.guides = await Promise.all(guides)
+//   next()
+// })
 
 tourSchema.pre(/^find/, function (next) {
   this.find({ isSecret: { $ne: true } })

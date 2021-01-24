@@ -1,6 +1,7 @@
 const { User } = require('../models')
 const { catchAsync } = require('../utils')
 const { AppError } = require('../utils')
+const { deleteOne, updateOne, getOne, getAll } = require('./factory')
 
 const filteredBody = (obj, ...fields) => {
   const filteredObj = {}
@@ -9,17 +10,6 @@ const filteredBody = (obj, ...fields) => {
   })
   return filteredObj
 }
-
-exports.getUsers = catchAsync(async (req, res) => {
-  const users = await User.find({})
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users,
-    },
-  })
-})
 
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm)
@@ -43,30 +33,14 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   })
 })
 
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented',
-  })
-}
-
 exports.createUser = (req, res) => {
   res.status(500).json({
     status: 'error',
-    message: 'not implemented',
+    message: 'use /signup to create an account',
   })
 }
 
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented',
-  })
-}
-
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'not implemented',
-  })
-}
+exports.getUsers = getAll(User)
+exports.getUser = getOne(User)
+exports.updateUser = updateOne(User)
+exports.deleteUser = deleteOne(User)
