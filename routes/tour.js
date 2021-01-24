@@ -16,16 +16,21 @@ const {
 
 const router = Router()
 
-router.route('/').get(getTours).post(createTour)
+router.use('/:id/reviews', reviewRouter)
+router
+  .route('/')
+  .get(getTours)
+  .post(protect, restrict('admin', 'lead-guide'), createTour)
 router.route('/top-5-cheap').get(aliasTopTours, getTours)
 router.route('/tour-stats').get(getTourStats)
-router.route('/monthly-plan/:year').get(getMonthlyPlan)
+router
+  .route('/monthly-plan/:year')
+  .get(protect, restrict('admin', 'lead-guide', 'guide'), getMonthlyPlan)
 router
   .route('/:id')
   .get(getTour)
-  .patch(updateTour)
+  .patch(protect, restrict('admin', 'lead-guide'), updateTour)
   .delete(protect, restrict('admin', 'lead-guide'), deleteTour)
-router.use('/:id/reviews', reviewRouter)
 // router.route('/:id/reviews').post(protect, restrict('user'), createReview)
 
 module.exports = router
