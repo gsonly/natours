@@ -35,6 +35,11 @@ const userSchema = new mongoose.Schema(
         message: 'passwords do not match',
       },
     },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
     role: {
       type: String,
       enum: ['user', 'admin', 'guide', 'lead-guide'],
@@ -63,6 +68,11 @@ userSchema.pre('save', async function (next) {
 //   }
 //   next()
 // })
+
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: { $ne: true } })
+  next()
+})
 
 userSchema.methods.verifyPassword = async function (password) {
   return await compare(password, this.password)
