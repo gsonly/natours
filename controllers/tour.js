@@ -17,7 +17,7 @@ exports.getTours = catchAsync(async (req, res, next) => {
   const tours = await features.query
   res.status(200).json({
     status: 'success',
-    results: tours.length,
+    results: tours.length + 1,
     data: {
       tours,
     },
