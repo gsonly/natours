@@ -25,7 +25,7 @@ exports.getOne = (model, opts) =>
     let query = model.findById(req.params.id)
     if (opts) query = query.populate(opts)
     const doc = await query
-    if (!doc) throw new AppError('cannot find tour with that ID', 404)
+    if (!doc) throw new AppError('cannot find document with that ID', 404)
     res.status(200).json({
       status: 'success',
       data: {
@@ -51,7 +51,7 @@ exports.updateOne = model =>
       new: true,
       runValidators: true,
     })
-    if (!doc) throw new AppError('cannot find tour with that ID', 404)
+    if (!doc) throw new AppError('cannot find document with that ID', 404)
     res.status(200).json({
       status: 'success',
       data: {
@@ -63,7 +63,7 @@ exports.updateOne = model =>
 exports.deleteOne = model =>
   catchAsync(async (req, res, next) => {
     const doc = await model.findByIdAndDelete(req.params.id)
-    if (!doc) throw new AppError('cannot find tour with that ID', 404)
+    if (!doc) throw new AppError('cannot find document with that ID', 404)
     res.status(204).json({
       status: 'success',
       data: null,
