@@ -11,6 +11,7 @@ const {
   getMonthlyPlan,
   protect,
   restrict,
+  getToursWithin,
   // createReview,
 } = require('../controllers')
 
@@ -26,6 +27,9 @@ router.route('/tour-stats').get(getTourStats)
 router
   .route('/monthly-plan/:year')
   .get(protect, restrict('admin', 'lead-guide', 'guide'), getMonthlyPlan)
+router
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(getToursWithin)
 router
   .route('/:id')
   .get(getTour)
