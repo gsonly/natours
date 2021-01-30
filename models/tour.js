@@ -149,7 +149,11 @@ tourSchema.pre(/^find/, function (next) {
 })
 
 tourSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({ $match: { isSecret: { $ne: true } } })
+  const pipeline = JSON.stringify(this.pipeline())
+  const regex = /geoNear/gi
+  const isGeoNear = pipeline.match(regex).join('').includes('geoNear')
+  if (!isGeoNear)
+    this.pipeline().unshift({ $match: { isSecret: { $ne: true } } })
   next()
 })
 
