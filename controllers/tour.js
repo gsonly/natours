@@ -1,5 +1,5 @@
 const { Tour } = require('../models')
-const { catchAsync } = require('../utils')
+const { catchAsync, AppError } = require('../utils')
 const { deleteOne, updateOne, createOne, getOne, getAll } = require('./factory')
 
 exports.aliasTopTours = (req, res, next) => {
@@ -14,6 +14,28 @@ exports.getTour = getOne(Tour, { path: 'reviews' })
 exports.createTour = createOne(Tour)
 exports.updateTour = updateOne(Tour)
 exports.deleteTour = deleteOne(Tour)
+
+exports.getToursWithin = async (req, res, next) => {
+  const { distance, latlng, unit } = req.params
+  const coordinates = latlng
+    .split(',')
+    .map(c => parseFloat(c))
+    .reverse()
+  const radius = unit === 'mi' ? distance / 3963.2 : distance / 6378.1
+  if (!latlng)
+    throw new AppError(
+      'please provide latitude and longitude in a format lat,lng',
+      400
+    )
+  const tours = await Tour.find({
+    startLocation: { $geoWithin: { $centerSphere: [coordinates, radius] } },
+  })
+  res.status(200).json({
+    status: 'success',
+    results: tours.length,
+    data: { tours },
+  })
+}
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
   const stats = await Tour.aggregate([
