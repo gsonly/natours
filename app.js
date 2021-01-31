@@ -12,6 +12,7 @@ const { AppError } = require('./utils')
 const { globalErrorHandler } = require('./controllers')
 
 const assetspath = path.join(__dirname, '/public')
+const viewspath = path.join(__dirname, '/views')
 const app = express()
 
 const limiter = rateLimit({
@@ -33,6 +34,8 @@ const hppOpts = hpp({
 
 if (!IN_PROD) app.use(morgan('dev'))
 
+app.set('views', viewspath)
+app.set('view engine', 'pug')
 app.use(helmet())
 app.use('/api', limiter)
 app.use(express.json({ limit: '10kb' }))
@@ -40,6 +43,19 @@ app.use(mongoSanitize())
 app.use(xss())
 app.use(hppOpts)
 app.use(express.static(assetspath))
+app.get('/', (req, res, next) =>
+  res.status(200).render('base', {
+    title: 'Exciting tours for adventurous people',
+    tour: 'the forest hiker',
+    user: 'alex',
+  })
+)
+app.get('/overview', (req, res, next) =>
+  res.status(200).render('overview', { title: 'All tours' })
+)
+app.get('/tour', (req, res, next) =>
+  res.status(200).render('tour', { title: 'the forest hiker' })
+)
 app.use('/api/v1/tours', tourRouter)
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/reviews', reviewRouter)
