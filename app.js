@@ -36,7 +36,11 @@ if (!IN_PROD) app.use(morgan('dev'))
 
 app.set('views', viewspath)
 app.set('view engine', 'pug')
-app.use(helmet())
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+)
 app.use('/api', limiter)
 app.use(express.json({ limit: '10kb' }))
 app.use(mongoSanitize())
