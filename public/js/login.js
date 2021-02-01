@@ -1,12 +1,7 @@
-const email = document.querySelector('#email')
-const password = document.querySelector('#password')
+import axios from 'axios'
+import alert from './alert'
 
-document.querySelector('.form').addEventListener('submit', e => {
-  e.preventDefault()
-  login({ email: email.value, password: password.value })
-})
-
-const login = async data => {
+export default async data => {
   try {
     const res = await axios({
       method: 'post',
@@ -14,12 +9,10 @@ const login = async data => {
       data,
     })
     if (res.status === 200) {
-      alert('login successfully')
-      setTimeout(() => {
-        location.assign('/')
-      }, 1500)
+      alert('success', 'successfully logged in')
+      setTimeout(() => location.assign('/'), 2500)
     }
   } catch (err) {
-    console.log(err.response.data.message)
+    alert('error', 'error')
   }
 }
