@@ -10,8 +10,8 @@
     "down": "docker-compose down",
     "start": "NODE_ENV=production nodemon server.js",
     "dev": "eval $(cat .env) nodemon server.js",
-    "build": "parcel build  public/js/index.js -d public/js --out-file bundle.js",
-    "watch": "parcel watch public/js/index.js -d public/js --out-file bundle.js"
+    "build": "parcel build  public/js/index.js -d public/js/dist --out-file bundle.js",
+    "watch": "parcel watch public/js/index.js -d public/js/dist --out-file bundle.js"
   },
   "dependencies": {
     "axios": "^0.21.1",
