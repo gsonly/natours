@@ -44,6 +44,16 @@ exports.login = catchAsync(async (req, res, next) => {
   sendToken(200, user, res)
 })
 
+exports.logout = (req, res, next) => {
+  res.cookie('jwt', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  })
+  res.status(200).json({
+    status: 'success',
+  })
+}
+
 // api
 exports.protect = catchAsync(async (req, res, next) => {
   let token
@@ -70,12 +80,16 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 // web
 exports.isLoggedIn = catchAsync(async (req, res, next) => {
-  if (req.cookies.jwt) {
-    const decoded = await promisify(verify)(req.cookies.jwt, JWT_SECRET)
-    const user = await User.findById(decoded.id)
-    if (!user) return next()
-    if (user.passwordChangedAfter(decoded.iat)) return next()
-    res.locals.user = user
+  try {
+    if (req.cookies.jwt) {
+      const decoded = await promisify(verify)(req.cookies.jwt, JWT_SECRET)
+      const user = await User.findById(decoded.id)
+      if (!user) return next()
+      if (user.passwordChangedAfter(decoded.iat)) return next()
+      res.locals.user = user
+      return next()
+    }
+  } catch (err) {
     return next()
   }
   next()

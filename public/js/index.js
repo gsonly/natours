@@ -1,6 +1,6 @@
-import 'core-js/stable'
+// import 'core-js/stable'
 import 'regenerator-runtime/runtime'
-import login from './login'
+import { login, logout } from './auth'
 import map from './map'
 import alert from './alert'
 
@@ -20,4 +20,9 @@ if (form) {
       return alert('error', 'please provide your email and password')
     login({ email, password })
   })
+}
+
+const logoutBtn = document.querySelector('.nav__el--logout')
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', logout)
 }

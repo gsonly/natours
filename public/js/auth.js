@@ -1,7 +1,7 @@
 import axios from 'axios'
 import alert from './alert'
 
-export default async data => {
+const login = async data => {
   try {
     const res = await axios({
       method: 'post',
@@ -16,3 +16,17 @@ export default async data => {
     alert('error', 'error')
   }
 }
+
+const logout = async () => {
+  try {
+    const res = await axios({
+      method: 'GET',
+      url: 'http://localhost:3000/api/v1/users/logout',
+    })
+    if (res.status === 200) location.reload(true)
+  } catch (err) {
+    alert('error', 'error logging out, try again!')
+  }
+}
+
+export { login, logout }
