@@ -1,11 +1,20 @@
 const { Router } = require('express')
-const { getOverview, getTour, getLogin, isLoggedIn } = require('../controllers')
+const {
+  getOverview,
+  getTour,
+  getLogin,
+  isLoggedIn,
+  getAccount,
+  protect,
+  updateUserData,
+} = require('../controllers')
 
 const router = Router()
 
-router.use(isLoggedIn)
-router.route('/').get(getOverview)
-router.route('/tour/:slug').get(getTour)
-router.route('/login').get(getLogin)
+router.route('/').get(isLoggedIn, getOverview)
+router.route('/tour/:slug').get(isLoggedIn, getTour)
+router.route('/login').get(isLoggedIn, getLogin)
+router.route('/me').get(protect, getAccount)
+router.route('/submitData').post(protect, updateUserData)
 
 module.exports = router

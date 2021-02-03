@@ -1,0 +1,6 @@
+mixin navItem(url, icon, context, active)
+  li(class=`${active ? 'side-nav--active' : ''}`)
+    a(href=url)
+      svg
+        use(xlink:href=`img/icons.svg#icon-${icon}`)
+      | #{context}

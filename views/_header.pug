@@ -12,7 +12,7 @@ header.header
     //- a.nav__el(href='#') My bookings
     if user
       a.nav__el.nav__el--logout(href='#') Logout
-      a.nav__el(href='#')
+      a.nav__el(href='/me')
         img.nav__user-img(src=`/img/users/${user.photo}` alt=`${user.name}`)
         span=user.name.split(' ')[0]
     else 
