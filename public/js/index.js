@@ -1,8 +1,9 @@
-// import 'core-js/stable'
+import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 import { login, logout } from './auth'
 import map from './map'
 import alert from './alert'
+import updateSettings from './updateSettings'
 
 const mapDiv = document.querySelector('#map')
 if (mapDiv) {
@@ -19,6 +20,31 @@ if (form) {
     if (email === '' || password === '')
       return alert('error', 'please provide your email and password')
     login({ email, password })
+  })
+}
+
+const userDataForm = document.querySelector('.form-user-data')
+if (userDataForm) {
+  userDataForm.addEventListener('submit', e => {
+    e.preventDefault()
+    const name = document.querySelector('#name').value
+    const email = document.querySelector('#email').value
+    updateSettings({name, email}, 'data')
+  })
+}
+
+const userPasswordForm = document.querySelector('.form-user-settings')
+if (userPasswordForm) {
+  const btn = userPasswordForm.querySelector('.btn')
+  userPasswordForm.addEventListener('submit', async e => {
+    e.preventDefault()
+    btn.textContent = 'updating...'.toUpperCase()
+    const oldPassword = document.querySelector('#password-current').value
+    const newPassword = document.querySelector('#password').value
+    const newPasswordConfirm = document.querySelector('#password-confirm').value
+    await updateSettings({ oldPassword, newPassword, newPasswordConfirm }, 'password')
+    btn.textContent = 'save password'.toUpperCase()
+    userPasswordForm.reset()
   })
 }
 
