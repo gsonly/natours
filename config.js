@@ -13,6 +13,9 @@ const {
   EMAIL_PORT = 2525,
   EMAIL_USER = 'user',
   EMAIL_PASS = 'secret',
+  EMAIL_FROM = 'gladson.sethiel@gmail.com',
+  SENDGRID_USERNAME = 'admin',
+  SENDGRID_PASSWORD = 'secret',
 } = process.env
 
 const IN_PROD = NODE_ENV === 'production'
@@ -38,5 +41,8 @@ module.exports = {
   EMAIL_PORT,
   EMAIL_USER,
   EMAIL_PASS,
+  EMAIL_FROM,
   COOKIE_TTL,
+  SENDGRID_USERNAME,
+  SENDGRID_PASSWORD,
 }
