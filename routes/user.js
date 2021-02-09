@@ -17,6 +17,7 @@ const {
   getMe,
   restrict,
   fileUpload,
+  processFile,
 } = require('../controllers')
 
 const router = Router()
@@ -28,7 +29,7 @@ router.route('/forgotPassword').post(forgotPassword)
 router.route('/resetPassword/:token').patch(resetPassword)
 router.use(protect)
 router.route('/updatePassword').patch(updatePassword)
-router.route('/updateMe').patch(fileUpload, updateMe)
+router.route('/updateMe').patch(fileUpload, processFile, updateMe)
 router.route('/deleteMe').patch(deleteMe)
 router.route('/me').get(getMe, getUser)
 router.use(restrict('admin'))

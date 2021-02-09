@@ -3,15 +3,16 @@ import alert from './alert'
 
 export default async (data, type) => {
   try {
-    const url = type  === 'password' ? 'http://localhost:3000/api/v1/users/updatePassword' : 'http://localhost:3000/api/v1/users/updateMe'
-    console.log(url);
-    console.log(data);
+    const url =
+      type === 'password'
+        ? 'http://localhost:3000/api/v1/users/updatePassword'
+        : 'http://localhost:3000/api/v1/users/updateMe'
     const res = await axios({
       method: 'PATCH',
       url,
-      data
+      data,
     })
-     if (res.status === 200) {
+    if (res.status === 200) {
       alert('success', `${type.toUpperCase()} updated successfully`)
     }
   } catch (err) {

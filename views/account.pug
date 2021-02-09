@@ -20,8 +20,8 @@ block main
       .user-view__content
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Your account settings
-          //- form.form.form-user-data(method='POST', action='/submitData')
-          form.form.form-user-data(enctype="multipart/form-data")
+          //- form.form.form-user-data(method='POST', action='/submitData',enctype="multipart/form-data")
+          form.form.form-user-data
             .form__group
               label.form__label(for='name') Name
               input#name.form__input(type='text', name='name' value=user.name, required)
@@ -30,7 +30,8 @@ block main
               input#email.form__input(type='email', name='email' value=user.email, required)
             .form__group.form__photo-upload
               img.form__user-photo(src=`img/users/${user.photo}`, alt=user.name)
-              a.btn-text(href='') Choose new photo
+              input.form__upload(type='file', accept='image/*', id='avatar', name='avatar')
+              label(for='avatar') Choose new photo
             .form__group.right
               button.btn.btn--small.btn--green Save settings
         .line &nbsp;
