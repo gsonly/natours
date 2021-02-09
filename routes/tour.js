@@ -13,6 +13,8 @@ const {
   restrict,
   getToursWithin,
   getDistances,
+  filesUpload,
+  processFiles,
   // createReview,
 } = require('../controllers')
 
@@ -35,7 +37,13 @@ router.route('/distances/:latlng/unit/:unit').get(getDistances)
 router
   .route('/:id')
   .get(getTour)
-  .patch(protect, restrict('admin', 'lead-guide'), updateTour)
+  .patch(
+    protect,
+    restrict('admin', 'lead-guide'),
+    filesUpload,
+    processFiles,
+    updateTour
+  )
   .delete(protect, restrict('admin', 'lead-guide'), deleteTour)
 // router.route('/:id/reviews').post(protect, restrict('user'), createReview)
 
