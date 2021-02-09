@@ -29,7 +29,7 @@ if (userDataForm) {
     e.preventDefault()
     const name = document.querySelector('#name').value
     const email = document.querySelector('#email').value
-    updateSettings({name, email}, 'data')
+    updateSettings({ name, email }, 'data')
   })
 }
 
@@ -42,7 +42,10 @@ if (userPasswordForm) {
     const oldPassword = document.querySelector('#password-current').value
     const newPassword = document.querySelector('#password').value
     const newPasswordConfirm = document.querySelector('#password-confirm').value
-    await updateSettings({ oldPassword, newPassword, newPasswordConfirm }, 'password')
+    await updateSettings(
+      { oldPassword, newPassword, newPasswordConfirm },
+      'password'
+    )
     btn.textContent = 'save password'.toUpperCase()
     userPasswordForm.reset()
   })
